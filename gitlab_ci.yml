@@ -1,0 +1,24 @@
+image: node:14
+
+services:
+  - postgres:13
+
+variables:
+  POSTGRES_DB: todo_db_test
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  DB_HOST: postgres
+  NODE_ENV: test
+
+before_script:
+  - npm install
+  - apt-get update -qq && apt-get install -y -qq postgresql-client
+  - psql -h postgres -U postgres -c "CREATE DATABASE todo_db_test;"
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - npm test
